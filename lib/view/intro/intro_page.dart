@@ -8,9 +8,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main/main_page.dart';
 import 'package:sqflite/sqflite.dart';
+import '../user/user_page.dart';
 
 class IntroPage extends StatefulWidget {
   final Database database;
+
   const IntroPage({super.key, required this.database});
 
   @override
@@ -116,15 +118,18 @@ class _IntroPageState extends State<IntroPage> {
             title: const Text(Constant.APP_NAME),
             content: const Text(
               '지금은 인터넷에 연결되지 않아 앱을 사용할 수 없습니다. '
-              '나중에 다시 실행해 주세요.',
+                '나중에 다시 실행해 주세요.',
             ),
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserPage(database: widget.database)),
+                  );
                   _isDialogOpen = false;
                 },
-                child: const Text('확인'),
+                child: const Text('오프라인으로 사용'),
               ),
             ],
           );
