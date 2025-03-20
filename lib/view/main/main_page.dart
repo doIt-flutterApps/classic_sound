@@ -3,6 +3,7 @@ import 'package:classic_sound/data/music.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:classic_sound/view/main/sound/download_listtile.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -39,7 +40,7 @@ class _MainPage extends State<MainPage> {
         itemBuilder: (context, value) {
           Music music = Music.fromStoreData(documentList[value]);
           musicList.add(music);
-          return Text(music.name);
+          return DownloadListTile(music: music);
         },
         itemCount: documentList.length,
       ),
