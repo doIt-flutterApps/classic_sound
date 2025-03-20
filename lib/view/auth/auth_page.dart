@@ -5,9 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main/main_page.dart';
+import 'package:sqflite/sqflite.dart';
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+  final Database database;
+  const AuthPage({super.key, required this.database,});
+
 
   @override
   _AuthPageState createState() => _AuthPageState();
@@ -42,7 +45,7 @@ class _AuthPageState extends State<AuthPage> {
         });
     // 메인 페이지로 이동하기
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => MainPage()),
+      MaterialPageRoute(builder: (context) => MainPage(database: widget.database,)),
       (route) => false,
     );
   }

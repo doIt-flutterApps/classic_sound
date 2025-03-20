@@ -4,17 +4,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:classic_sound/view/main/sound/download_listtile.dart';
+import 'package:sqflite/sqflite.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final Database database;
+  const MainPage({super.key, required this.database});
 
   @override
   State<StatefulWidget> createState() {
-    return _MainPage();
+    return _MainPageState();
   }
 }
 
-class _MainPage extends State<MainPage> {
+class _MainPageState extends State<MainPage> {
   late List<DocumentSnapshot> documentList = List<DocumentSnapshot>.empty(
     growable: true,
   );
@@ -40,7 +42,7 @@ class _MainPage extends State<MainPage> {
         itemBuilder: (context, value) {
           Music music = Music.fromStoreData(documentList[value]);
           musicList.add(music);
-          return DownloadListTile(music: music);
+          return DownloadListTile(music: music, database: widget.database,);
         },
         itemCount: documentList.length,
       ),

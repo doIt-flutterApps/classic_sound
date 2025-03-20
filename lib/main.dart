@@ -3,15 +3,20 @@ import 'package:classic_sound/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:classic_sound/view/intro/intro_page.dart';
+import 'package:sqflite/sqflite.dart';
+import 'data/local_database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(MyApp());
+  final Database database = await MusicDatabase.initDatabase();
+  runApp(MyApp(database: database,));
+
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Database database;
+  const MyApp({super.key, required this.database});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: UploadPage(),
-      home: IntroPage(),
+      home: IntroPage(database: database,),
     );
   }
 }

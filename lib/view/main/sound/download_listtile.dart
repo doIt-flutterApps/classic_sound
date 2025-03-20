@@ -4,11 +4,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:io';
+import 'package:classic_sound/view/main/sound/sound_detail_page.dart';
+import 'package:sqflite/sqflite.dart';
+import '../../../data/local_database.dart';
 
 class DownloadListTile extends StatefulWidget {
   final Music music;
-
-  const DownloadListTile({super.key, required this.music});
+  final Database database;
+  const DownloadListTile({super.key, required this.music, required this.database,});
 
   @override
   _DownloadListTileState createState() => _DownloadListTileState();
@@ -50,10 +53,18 @@ class _DownloadListTileState extends State<DownloadListTile> {
         // 파일이 있는지 확인하기
         bool exists = await file.exists();
         if (exists) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return SoundDetailPage(music: widget.music);
+              },
+            ),
+          );
         } else {
           // 파일이 없다면 내려받기 시작하기
           setState(() {
             isDownloading = true;
+            MusicDatabase(widget.database).insertMusic(widget.music);
           });
           await Dio().download(
             url,

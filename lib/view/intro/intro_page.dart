@@ -7,8 +7,12 @@ import '../auth/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main/main_page.dart';
+import 'package:sqflite/sqflite.dart';
 
 class IntroPage extends StatefulWidget {
+  final Database database;
+  const IntroPage({super.key, required this.database});
+
   @override
   State<StatefulWidget> createState() {
     return _IntroPageState();
@@ -76,7 +80,9 @@ class _IntroPageState extends State<IntroPage> {
             if (mounted) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => MainPage()),
+                MaterialPageRoute(
+                  builder: (context) => MainPage(database: widget.database),
+                ),
               );
             }
           });
@@ -85,7 +91,9 @@ class _IntroPageState extends State<IntroPage> {
             if (mounted) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => AuthPage()),
+                MaterialPageRoute(
+                  builder: (context) => AuthPage(database: widget.database),
+                ),
               );
             }
           });
